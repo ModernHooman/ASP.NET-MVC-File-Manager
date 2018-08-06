@@ -1,0 +1,39 @@
+/*
+Error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.
+        on line 41 of theme-default-rtl.css
+
+36: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/bin/scss:13:in `<top (required)>'
+37: C:/Ruby24-x64/bin/scss:23:in `load'
+38: C:/Ruby24-x64/bin/scss:23:in `<main>'
+39: *\/
+40: body:before {
+41:   white-space: pre;
+42:   font-family: monospace;
+43:   content: "Error: Invalid property: \"Backtrace:\" (no value).\A         on line 4 of theme-default-rtl.css\A \A 1: /*\A 2: Errno::ENOENT: No such file or directory @ rb_sysopen - theme-default-rtl.css\A 3: \A 4: Backtrace:\A 5: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:454:in `read'\A 6: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:454:in `update_stylesheet'\A 7: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'\A 8: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `each'\A 9: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'"; }
+
+Backtrace:
+theme-default-rtl.css:41
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:494:in `block in tabulate'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:452:in `each'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:452:in `each_with_index'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:452:in `tabulate'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:417:in `_to_tree'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/engine.rb:307:in `render_with_sourcemap'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `each'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin.rb:82:in `update_stylesheets'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/exec/sass_scss.rb:51:in `process_result'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/exec/base.rb:52:in `parse'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/exec/base.rb:19:in `parse!'
+C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/bin/scss:13:in `<top (required)>'
+C:/Ruby24-x64/bin/scss:23:in `load'
+C:/Ruby24-x64/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Inconsistent indentation: 2 spaces were used for indentation, but the rest of the document was indented using 8 spaces.\A         on line 41 of theme-default-rtl.css\A \A 36: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/bin/scss:13:in `<top (required)>'\A 37: C:/Ruby24-x64/bin/scss:23:in `load'\A 38: C:/Ruby24-x64/bin/scss:23:in `<main>'\A 39: */\A 40: body:before {\A 41:   white-space: pre;\A 42:   font-family: monospace;\A 43:   content: \"Error: Invalid property: \\"Backtrace:\\" (no value).\A         on line 4 of theme-default-rtl.css\A \A 1: /*\A 2: Errno::ENOENT: No such file or directory @ rb_sysopen - theme-default-rtl.css\A 3: \A 4: Backtrace:\A 5: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:454:in `read'\A 6: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:454:in `update_stylesheet'\A 7: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'\A 8: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `each'\A 9: C:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.4/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'\"; }"; }

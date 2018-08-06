@@ -240,3 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/FileManagerApp/Areas/FileManager/Assets/.idea
+/FileManagerApp/File-Repository/New Folder/Sub Folder
+/FileManagerApp/File-Repository/File01.txt

@@ -1,0 +1,60 @@
+@import 'bootstrap/bootstrap';
+@import 'typography';
+@import 'fontawesome-pro';
+
+.card {
+  .card-body {
+
+  }
+}
+
+#main-wrapper {
+  #page-wrapper {
+  }
+}
+
+.card-toolbar {
+}
+
+.btn-group, .input-group-append {
+  .btn {
+    border-radius: 0 !important;
+  }
+}
+
+input[name="current-path"] {
+  border-radius: 0;
+  border-right: 0;
+  border-left: 0;
+}
+
+.btn.new-folder {
+  position: relative;
+  .fa-plus {
+    position: absolute;
+    font-size: 9px;
+    top: 12px;
+    left: 18px;
+  }
+  .fa-folder {
+    font-size: 19px;
+  }
+}
+
+.item {
+  figure {
+    img {
+      border: 2px solid transparent;
+      padding: 15px;
+      &:hover {
+        border-color: $primary;
+      }
+    }
+    figcaption {
+      text-align: center;
+    }
+  }
+  &.file {
+    cursor: pointer;
+  }
+}
