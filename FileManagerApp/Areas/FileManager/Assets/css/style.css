@@ -11101,8 +11101,11 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Font Awesome 5 Pro";
   font-weight: 900; }
 
-.btn-group .btn, .input-group-append .btn {
-  border-radius: 0 !important; }
+.card-toolbar .btn-group .btn, .card-toolbar .input-group-append .btn, .card-address-bar .btn-group .btn, .card-address-bar .input-group-append .btn {
+  border-radius: 0; }
+
+.go-back {
+  border-top-left-radius: .25rem !important; }
 
 input[name="current-path"] {
   border-radius: 0;
@@ -11119,14 +11122,73 @@ input[name="current-path"] {
   .btn.new-folder .fa-folder {
     font-size: 19px; }
 
-.item figure img {
+.item {
+  position: relative;
+  height: 150px;
+  text-align: center;
   border: 2px solid transparent;
-  padding: 15px; }
-  .item figure img:hover {
+  overflow: hidden; }
+  .item .img-wrapper {
+    padding: 10px;
+    height: 100px;
+    width: 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center; }
+  .item .title-wrapper {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .item .custom-checkbox {
+    display: inline-block;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 16px;
+    width: 16px; }
+    .item .custom-checkbox input {
+      display: none; }
+    .item .custom-checkbox label {
+      width: 16px;
+      height: 16px; }
+      .item .custom-checkbox label::before, .item .custom-checkbox label::after {
+        left: 0;
+        top: 0; }
+  .item .options {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: .3s; }
+    .item .options a {
+      color: #fff;
+      padding: 5px; }
+  .item:hover {
     border-color: #007bff; }
-.item figure figcaption {
-  text-align: center; }
-.item.file {
-  cursor: pointer; }
+    .item:hover .options {
+      bottom: 0; }
+  .item.folder .custom-checkbox {
+    display: none; }
+
+.uploader .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 76px;
+  height: 3px; }
+
+.CodeMirror {
+  min-height: 700px;
+  border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem; }
 
 /*# sourceMappingURL=style.css.map */

@@ -8,7 +8,7 @@ namespace FileManagerApp.Areas.FileManager {
             context.MapRoute(
                 "FileManager_default",
                 "FileManager/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", controller = "Main", id = UrlParameter.Optional }
             );
         }
     }

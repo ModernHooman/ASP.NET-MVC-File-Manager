@@ -13,13 +13,16 @@
   }
 }
 
-.card-toolbar {
+.card-toolbar, .card-address-bar {
+  .btn-group, .input-group-append {
+    .btn {
+      border-radius: 0;
+    }
+  }
 }
 
-.btn-group, .input-group-append {
-  .btn {
-    border-radius: 0 !important;
-  }
+.go-back {
+  border-top-left-radius: .25rem !important;
 }
 
 input[name="current-path"] {
@@ -42,19 +45,88 @@ input[name="current-path"] {
 }
 
 .item {
-  figure {
-    img {
-      border: 2px solid transparent;
-      padding: 15px;
-      &:hover {
-        border-color: $primary;
+  position: relative;
+  height: 150px;
+  text-align: center;
+  border: 2px solid transparent;
+  overflow: hidden;
+  .img-wrapper {
+    padding: 10px;
+    height: 100px;
+    width: 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+  .title-wrapper {
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .custom-checkbox {
+    display: inline-block;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 16px;
+    width: 16px;
+    input {
+      display: none;
+    }
+    label {
+      width: 16px;
+      height: 16px;
+      &::before, &::after {
+        left: 0;
+        top: 0;
       }
     }
-    figcaption {
-      text-align: center;
+  }
+  .options {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(0, 0, 0, .8);
+    transition: .3s;
+    a {
+      color: $white;
+      padding: 5px;
     }
   }
-  &.file {
-    cursor: pointer;
+  &:hover {
+    border-color: $primary;
+    .options {
+      bottom: 0;
+    }
   }
+  &.folder {
+    .custom-checkbox {
+      display: none;
+    }
+  }
+}
+
+.uploader {
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 76px;
+    height: 3px;
+  }
+}
+
+.CodeMirror {
+  min-height: 700px;
+  border-bottom-left-radius: .25rem;
+  border-bottom-right-radius: .25rem;
 }
