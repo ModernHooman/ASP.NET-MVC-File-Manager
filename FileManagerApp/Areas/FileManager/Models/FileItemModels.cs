@@ -101,5 +101,6 @@ namespace FileManagerApp.Areas.FileManager.Models {
         public static string NotFoundInDatabase = "File or Directory Not Found in Datebase!";
         public static string NotFoundInFileSystem = "File or Directory Not Found in File System!";
         public static string NameChanged = "Name Changed.";
+        public static string SuccessfullyDeleted = "Successfully Deleted.";
     }
 }
