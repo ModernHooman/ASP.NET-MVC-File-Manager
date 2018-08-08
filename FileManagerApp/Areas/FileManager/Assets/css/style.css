@@ -11122,6 +11122,11 @@ input[name="current-path"] {
   .btn.new-folder .fa-folder {
     font-size: 19px; }
 
+#main-body.card-body {
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden; }
+
 .item {
   position: relative;
   height: 150px;

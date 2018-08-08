@@ -44,6 +44,15 @@ input[name="current-path"] {
   }
 }
 
+#main-body.card-body{
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#items-wrapper {
+
+}
+
 .item {
   position: relative;
   height: 150px;
