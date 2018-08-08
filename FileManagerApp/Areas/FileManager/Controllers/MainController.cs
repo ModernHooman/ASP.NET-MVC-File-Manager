@@ -126,7 +126,6 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
                     });
                 }
 
-                Thread.Sleep(5000);
                 model.PostedFile.SaveAs(absPath);
                 listToAdd.Add(new FileItem {
                     Name = model.PostedFile.FileName,
