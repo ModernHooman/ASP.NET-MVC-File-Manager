@@ -241,6 +241,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /FileManagerApp/Areas/FileManager/Assets/.idea
-/FileManagerApp/File-Repository/New Folder/Sub Folder
-/FileManagerApp/File-Repository/File01.txt
-/FileManagerApp/File-Repository/New Folder 01 x/New Folder 02 x/New Folder 03
+/FileManagerApp/File-Repository

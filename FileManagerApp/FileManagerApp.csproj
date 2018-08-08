@@ -788,6 +788,7 @@
     <Content Include="Areas\FileManager\Assets\scss\alertify\theme-default.scss" />
     <Content Include="Areas\FileManager\Views\Main\Edit.cshtml" />
     <Content Include="Areas\FileManager\Assets\css\style.css.map" />
+    <Content Include="README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
