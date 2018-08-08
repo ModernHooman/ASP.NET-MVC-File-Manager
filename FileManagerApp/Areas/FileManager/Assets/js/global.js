@@ -87,7 +87,7 @@ function rename_item(id, name, isFolder) {
             hide_loader();
             if (res && res.Status) {
                 alertify.notify(res.Message, 'success', 5);
-                $('[data-uid="' + id + '"]').find('.title-wrapper').html(name);
+                update();
             } else {
                 alertify.notify(res.Message, 'error', 5);
             }
