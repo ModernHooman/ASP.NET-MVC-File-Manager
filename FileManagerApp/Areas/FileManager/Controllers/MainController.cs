@@ -200,15 +200,6 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
                 }
 
                 string absPath = Server.MapPath(string.Concat(file.Path.Replace("ROOT", RootPath), '/', file.Name));
-
-                file.Name = model.Name;
-                if (file.Path != "ROOT") {
-                    file.Path = string.Concat(string.Join("/", file.Path.Split('/').Reverse().Skip(1).Reverse()), '/', file.Name);
-                }
-                file.MDate = DateTime.UtcNow;
-
-                await db.SaveChangesAsync();
-
                 if (model.IsFolder) {
                     if (!Directory.Exists(absPath)) {
                         return Json(new OperationResult {
@@ -216,8 +207,14 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
                             Message = StringResources.NotFoundInFileSystem,
                         });
                     }
+                    // Rename the name of current directory
                     // Rename in File System
                     Directory.Move(absPath, RenameFileOrDirectory(absPath, model.Name));
+                    // Rename in Database
+                    file.Name = model.Name;
+                    file.MDate = DateTime.UtcNow;
+                    await db.SaveChangesAsync();
+
                     // Change sub directory and file pathes
                     await UpdateSubDirectoryPath(await db.FileItems.Where(x => x.FileId != null && x.FileId == file.Id).ToListAsync());
                 } else {
@@ -227,12 +224,14 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
                             Message = StringResources.NotFoundInFileSystem,
                         });
                     }
-                    // Rename
+                    // Rename in File System
                     System.IO.File.Move(absPath, RenameFileOrDirectory(absPath, model.Name));
+
+                    // Rename in Database
+                    file.Name = model.Name;
+                    file.MDate = DateTime.UtcNow;
+                    await db.SaveChangesAsync();
                 }
-
-
-                
 
                 await db.SaveChangesAsync();
 
@@ -254,7 +253,7 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
         }
 
         private string RenameFileOrDirectory(string path, string newName) {
-            var dirName = string.Join("\\", path.Split('\\').Reverse().Skip(1).Reverse().ToArray());
+            var dirName = string.Join("\\", path.Split('\\').Reverse().Skip(1).Reverse());
 
             return string.Concat(dirName, '\\', newName);
         }
