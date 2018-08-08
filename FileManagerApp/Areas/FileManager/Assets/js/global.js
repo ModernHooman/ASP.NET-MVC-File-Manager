@@ -20,9 +20,10 @@ function simplifyMimeType(mime) {
         return 'txt';
     } else if (mime.includes('javascript')) {
         return 'javascript';
+    } else if (mime.includes('mp4')) {
+        return 'mp4';
     }
-
-    return mime;
+    return 'file';
 }
 
 function update() {
@@ -94,6 +95,23 @@ function rename_item(id, name, isFolder) {
         });
 }
 
+function delete_item(id, name, isFolder) {
+    // make a request to create new folder
+    show_loader();
+    $.post(serverPath + 'Delete/',
+        {Id: id, IsFolder: isFolder},
+        function (res) {
+            hide_loader();
+            if (res && res.Status) {
+                alertify.notify(res.Message, 'success', 5);
+                update();
+            } else {
+                alertify.notify(res.Message, 'error', 5);
+            }
+        }
+    );
+}
+
 function upload(inpFile) {
     var progress = inpFile.parents('.uploader').find('.progress-bar');
     var data = new FormData();
@@ -125,16 +143,13 @@ function upload(inpFile) {
         success: function (data, textStatus, jqXHR) {
             if (typeof data.error === 'undefined') {
                 // Success so call function to process the form
-            }
-            else {
+                update();
+            } else {
                 // Handle errors here
-                console.log('ERRORS: ' + data.error);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
             // Handle errors here
-            console.log('ERRORS: ' + textStatus);
-            // STOP LOADING SPINNER
         }
     });
 }
@@ -207,6 +222,7 @@ $('#start-upload').click(function () {
         upload($(this));
     });
 });
+
 bdy.on('click', 'a.rename', function (e) {
     e.preventDefault();
     var item = $(this).parents('.item');
@@ -214,6 +230,18 @@ bdy.on('click', 'a.rename', function (e) {
         item.find('.title-wrapper').html(),
         function (evt, value) {
             rename_item(item.attr('data-uid'), value, item.hasClass('folder'));
+        }, function () {
+            alertify.error('Cancel')
+        }
+    );
+});
+bdy.on('click', 'a.delete', function (e) {
+    e.preventDefault();
+    var item = $(this).parents('.item');
+    var type = item.hasClass('folder') ? 'Folder' : 'File';
+    alertify.confirm('Delete ' + type, 'The ' + type + ' <strong>[' + item.find('.title-wrapper').html() + ']</strong> Will Be Deleted!',
+        function (evt, value) {
+            delete_item(item.attr('data-uid'), value, item.hasClass('folder'));
         }, function () {
             alertify.error('Cancel')
         }

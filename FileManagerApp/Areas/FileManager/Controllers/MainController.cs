@@ -15,6 +15,10 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
     public class MainController : Controller {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
         private string RootPath = "~/File-Repository/";
+        private List<FileItem> Items;
+
+        public MainController() {
+        }
 
         // GET: FileManager/Main
         public ActionResult Index() {
@@ -25,7 +29,7 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
         public async Task<ActionResult> Update(string path) {
             path = path.Trim('/');
             // get current files & folders
-            var items = db.FileItems.Where(x => x.Path.Equals(path)).Select(x => new FileItemModel {
+            var items = db.FileItems.Where(x => x.Path.Equals(path)).OrderByDescending(x => x.IsFolder).Select(x => new FileItemModel {
                 Id = x.Id,
                 Name = x.Name,
                 Path = x.Path,
@@ -162,7 +166,7 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
                 if (file == null) {
                     return RedirectToAction("Index");
                 }
-                string path = Server.MapPath(string.Concat(file.Path.Replace("ROOT", RootPath), file.Name));
+                string path = Server.MapPath(string.Concat(file.Path.Replace("ROOT", RootPath), '/', file.Name));
 
                 if (!System.IO.File.Exists(path)) {
                     return RedirectToAction("Index");
@@ -243,11 +247,72 @@ namespace FileManagerApp.Areas.FileManager.Controllers {
             }
         }
 
-        private async Task UpdateSubDirectoryPath(List<FileItem> files) {
-            foreach (var subItem in files) {
-                subItem.Path = string.Concat(subItem.File.Path, '/', subItem.File.Name);
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id) {
+            try {
+                FileItem file = await db.FileItems.FindAsync(id);
+
+                if (file == null) {
+                    return Json(new OperationResult {
+                        Status = OperationStats.Error,
+                        Message = StringResources.NotFoundInDatabase,
+                    });
+                }
+
+                string path = Server.MapPath(string.Concat(file.Path.Replace("ROOT", RootPath), '/', file.Name));
+
+                if (file.IsFolder) {
+                    if (!Directory.Exists(path)) {
+                        return Json(new OperationResult {
+                            Status = OperationStats.Error,
+                            Message = StringResources.NotFoundInFileSystem,
+                        });
+                    }
+                    // Remove it from File System
+                    Directory.Delete(path, true);
+                } else {
+                    if (!System.IO.File.Exists(path)) {
+                        return Json(new OperationResult {
+                            Status = OperationStats.Error,
+                            Message = StringResources.NotFoundInFileSystem,
+                        });
+                    }
+                    // Remove it from File System
+                    System.IO.File.Delete(path);
+                }
+
+                // Remove it's sub items and itself from Database
+                Items = new List<FileItem>();
+                await GetSubItemsAsync(await db.FileItems.Where(x => x.Id == file.Id).ToListAsync());
+                Items.Reverse();
+                foreach (var item in Items) {
+                    db.FileItems.Remove(item);
+                }
+
+                db.FileItems.Remove(file);
                 await db.SaveChangesAsync();
-                await UpdateSubDirectoryPath(subItem.Files.ToList());
+
+                return Json(new OperationResult {
+                    Status = OperationStats.Success,
+                    Message = StringResources.SuccessfullyDeleted
+                });
+            } catch (Exception ex) {
+                throw;
+            }
+        }
+
+        private async Task GetSubItemsAsync(List<FileItem> items) {
+            foreach (FileItem item in items) {
+                Items.Add(item);
+                await GetSubItemsAsync(item.Files.ToList());
+            }
+        }
+
+        private async Task UpdateSubDirectoryPath(List<FileItem> items) {
+            foreach (var item in items) {
+                item.Path = string.Concat(item.File.Path, '/', item.File.Name);
+                await db.SaveChangesAsync();
+                await UpdateSubDirectoryPath(item.Files.ToList());
             }
         }
 
