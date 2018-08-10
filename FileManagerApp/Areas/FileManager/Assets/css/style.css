@@ -11196,4 +11196,16 @@ input[name="current-path"] {
   border-bottom-left-radius: .25rem;
   border-bottom-right-radius: .25rem; }
 
+.ajs-content {
+  padding-right: 0 !important;
+  padding-left: 0 !important; }
+
+.dl-horizontal dt, .dl-horizontal dd {
+  display: inline-block;
+  width: 50%; }
+.dl-horizontal.dt-30 dt {
+  width: 30%; }
+.dl-horizontal.dt-30 dl {
+  width: 70%; }
+
 /*# sourceMappingURL=style.css.map */

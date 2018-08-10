@@ -44,11 +44,12 @@ input[name="current-path"] {
   }
 }
 
-#main-body.card-body{
+#main-body.card-body {
   height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
 }
+
 #items-wrapper {
 
 }
@@ -138,4 +139,26 @@ input[name="current-path"] {
   min-height: 700px;
   border-bottom-left-radius: .25rem;
   border-bottom-right-radius: .25rem;
+}
+
+// Alertify Customizations
+.ajs-content {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+
+// Helpers
+.dl-horizontal {
+  dt, dd {
+    display: inline-block;
+    width: 50%;
+  }
+  &.dt-30 {
+    dt {
+      width: 30%;
+    }
+    dl {
+      width: 70%;
+    }
+  }
 }
