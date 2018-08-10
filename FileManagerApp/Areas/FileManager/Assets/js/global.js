@@ -42,7 +42,13 @@ function update() {
                 }
                 row.append(
                     '<div class="col-lg-2">' +
-                    '   <div class="item ' + (value['IsFolder'] ? 'folder' : 'file') + '" data-path="' + path + '" data-mime-type="' + value['MimeType'] + '" data-uid="' + value['Id'] + '">' +
+                    '   <div class="item ' + (value['IsFolder'] ? 'folder' : 'file') + '" ' +
+                    '           data-uid="' + value['Id'] + '" ' +
+                    '           data-name="' + value['Name'] + '"' +
+                    '           data-mime-type="' + value['MimeType'] + '" ' +
+                    '           data-path="' + path + '" ' +
+                    '           data-CDate="' + new Date(parseInt(value['CDate'].substr(6))).toLocaleString() + '" ' +
+                    '           data-MDate="' + new Date(parseInt(value['MDate'].substr(6))).toLocaleString() + '">' +
                     '       <div class="img-wrapper">' +
                     '           <img src="' + src + '" class="img-fluid" alt="">' +
                     '       </div>' +
@@ -52,6 +58,7 @@ function update() {
                     '           <label class="custom-control-label" for="ch-' + value['Id'] + '"></label>' +
                     '       </div>' +
                     '       <div class="options">' +
+                    '           <a href="javascript:void(0);" class="info"><i class="fal fa-info fa-fw"></i></a>' +
                     '           <a href="' + realPath + '" class="download" download><i class="fal fa-download fa-fw"></i></a>' +
                     '           <a href="javascript:void(0);" class="delete"><i class="fal fa-trash-alt fa-fw"></i></a>' +
                     '           <a href="javascript:void(0);" class="rename"><i class="fal fa-pencil-alt fa-fw"></i></a>' +
@@ -244,6 +251,29 @@ bdy.on('click', 'a.delete', function (e) {
             delete_item(item.attr('data-uid'), value, item.hasClass('folder'));
         }, function () {
             alertify.error('Cancel')
+        }
+    );
+});
+bdy.on('click', 'a.info', function (e) {
+    e.preventDefault();
+    var item = $(this).parents('.item');
+    var type = item.hasClass('folder') ? 'Folder' : 'File';
+    alertify.alert(type + ' Information',
+        '<dl class="dl-horizontal dt-30">' +
+        '   <dt>Id</dt>' +
+        '   <dd>' + item.attr('data-uid') + '</dd>' +
+        '   <dt>Name</dt>' +
+        '   <dd>' + item.attr('data-name') + '</dd>' +
+        '   <dt>Mime Type</dt>' +
+        '   <dd>' + item.attr('data-mime-type') + '</dd>' +
+        '   <dt>Path</dt>' +
+        '   <dd>' + item.attr('data-path') + '</dd>' +
+        '   <dt>Creation Date</dt>' +
+        '   <dd>' + item.attr('data-CDate') + '</dd>' +
+        '   <dt>Modification Date</dt>' +
+        '   <dd>' + item.attr('data-MDate') + '</dd>' +
+        '</dl>',
+        function (evt, value) {
         }
     );
 });
