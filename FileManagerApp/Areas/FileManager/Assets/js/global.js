@@ -4,6 +4,33 @@ var uploaderWrapper = $('.uploaders');
 var bdy = $(document.body);
 const updateBtn = $('#update');
 const updateIcon = updateBtn.find('> i');
+const uploaderSample = $(
+    '<div class="uploader">' +
+    '    <div class="input-group mb-3">' +
+    '        <div class="input-group-prepend">' +
+    '            <span class="input-group-text" id="">Upload</span>' +
+    '        </div>' +
+    '        <div class="custom-file">' +
+    '            <input type="file" class="custom-file-input" id="" aria-describedby="">' +
+    '            <label class="custom-file-label" for="">' +
+    '                <span class="title">Choose File&hellip;</span>' +
+    '                <span class="progress">' +
+    '                    <span class="progress-bar" role="progressbar"' +
+    '                         style="width: 0;"' +
+    '                         aria-valuenow="0"' +
+    '                         aria-valuemin="0"' +
+    '                         aria-valuemax="100">' +
+    '                    </span>' +
+    '                </span>' +
+    '            </label>' +
+    '        </div>' +
+    '        <div class="input-group-append">' +
+    '            <button class="btn btn-outline-danger del-uploader" type="button" id="">' +
+    '                <i class="fal fa-times"></i>' +
+    '            </button>' +
+    '        </div>' +
+    '    </div>' +
+    '</div>');
 
 function toggle_loader() {
     $('.loader').toggleClass('show');
@@ -206,8 +233,7 @@ updateBtn.click(function () {
     update();
 });
 $('#new-uploader').click(function () {
-    var uploader = uploaderWrapper.find('.uploader').last().clone();
-    uploaderWrapper.append(uploader);
+    uploaderWrapper.append(uploaderSample.clone());
 });
 bdy.on('dblclick', '.item.file', function (e) {
     var item = $(this);
@@ -219,6 +245,9 @@ bdy.on('dblclick', '.item.file', function (e) {
 });
 bdy.on('click', '.item.file .custom-checkbox', function (e) {
     e.stopPropagation();
+});
+$('#upload-modal').on('show.bs.modal', function () {
+   uploaderWrapper.html(uploaderSample.clone());
 });
 bdy.on('change', '.uploader .custom-file > input[type="file"]', function (e) {
     var fileName = e.target.files[0].name;
