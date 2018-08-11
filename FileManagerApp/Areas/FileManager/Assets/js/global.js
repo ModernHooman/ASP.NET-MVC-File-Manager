@@ -2,13 +2,11 @@ var serverPath = '/FileManager/Main/';
 var addressBar = $('input[name="current-path"]');
 var uploaderWrapper = $('.uploaders');
 var bdy = $(document.body);
+const updateBtn = $('#update');
+const updateIcon = updateBtn.find('> i');
 
-function show_loader() {
-
-}
-
-function hide_loader() {
-
+function toggle_loader() {
+    $('.loader').toggleClass('show');
 }
 
 function getCurrentPath() {
@@ -27,7 +25,14 @@ function simplifyMimeType(mime) {
 }
 
 function update() {
+    // Show Loader
+    toggle_loader();
+    // SPIN update icon
+    updateIcon.toggleClass('fa-spin');
     $.get(serverPath + 'Update?path=' + getCurrentPath(), function (res) {
+        // Hide Loader
+        toggle_loader();
+        updateIcon.toggleClass('fa-spin');
         if (res) {
             var itemsWrapper = $('#items-wrapper');
             var row = $('<div class="row">');
@@ -74,10 +79,10 @@ function update() {
 
 function create_new_item(name, isFolder) {
     // make a request to create new folder
-    show_loader();
+    toggle_loader();
     $.post(serverPath + 'Create/',
         {Name: name, Path: getCurrentPath(), IsFolder: isFolder}, function (res) {
-            hide_loader();
+            toggle_loader();
             if (res) {
                 if (res.message) {
                     alertify.notify(res.message, 'success', 5);
@@ -89,10 +94,10 @@ function create_new_item(name, isFolder) {
 
 function rename_item(id, name, isFolder) {
     // make a request to create new folder
-    show_loader();
+    toggle_loader();
     $.post(serverPath + 'Rename/',
         {Id: id, Name: name, IsFolder: isFolder}, function (res) {
-            hide_loader();
+            toggle_loader();
             if (res && res.Status) {
                 alertify.notify(res.Message, 'success', 5);
                 update();
@@ -104,11 +109,11 @@ function rename_item(id, name, isFolder) {
 
 function delete_item(id, name, isFolder) {
     // make a request to create new folder
-    show_loader();
+    toggle_loader();
     $.post(serverPath + 'Delete/',
         {Id: id, IsFolder: isFolder},
         function (res) {
-            hide_loader();
+            toggle_loader();
             if (res && res.Status) {
                 alertify.notify(res.Message, 'success', 5);
                 update();
@@ -197,7 +202,7 @@ $('.go-back').click(function () {
     addressBar.val(currentAddress.join('/'));
     update();
 });
-$('#update').click(function () {
+updateBtn.click(function () {
     update();
 });
 $('#new-uploader').click(function () {
