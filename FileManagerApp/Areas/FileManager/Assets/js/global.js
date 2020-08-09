@@ -31,6 +31,8 @@ const uploaderSample = $(
     '        </div>' +
     '    </div>' +
     '</div>');
+var SelectedItemPath;
+var SelectedItemId;
 
 function toggle_loader() {
     $('.loader').toggleClass('show');
@@ -52,6 +54,7 @@ function simplifyMimeType(mime) {
 }
 
 function update() {
+
     // Show Loader
     toggle_loader();
     // SPIN update icon
@@ -91,7 +94,8 @@ function update() {
                     '       </div>' +
                     '       <div class="options">' +
                     '           <a href="javascript:void(0);" class="info"><i class="fal fa-info fa-fw"></i></a>' +
-                    '           <a href="' + realPath + '" class="download" download><i class="fal fa-download fa-fw"></i></a>' +
+                    '           <a href="javascript:void(0);" class="preview"><i class="fal fa-eye fa-fw"></i></a>' +
+                    //'           <a href="' + realPath + '" class="download" download><i class="fal fa-download fa-fw"></i></a>' +
                     '           <a href="javascript:void(0);" class="delete"><i class="fal fa-trash-alt fa-fw"></i></a>' +
                     '           <a href="javascript:void(0);" class="rename"><i class="fal fa-pencil-alt fa-fw"></i></a>' +
                     '       </div>' +
@@ -108,7 +112,7 @@ function create_new_item(name, isFolder) {
     // make a request to create new folder
     toggle_loader();
     $.post(serverPath + 'Create/',
-        {Name: name, Path: getCurrentPath(), IsFolder: isFolder}, function (res) {
+        { Name: name, Path: getCurrentPath(), IsFolder: isFolder }, function (res) {
             toggle_loader();
             if (res) {
                 if (res.message) {
@@ -123,7 +127,7 @@ function rename_item(id, name, isFolder) {
     // make a request to create new folder
     toggle_loader();
     $.post(serverPath + 'Rename/',
-        {Id: id, Name: name, IsFolder: isFolder}, function (res) {
+        { Id: id, Name: name, IsFolder: isFolder }, function (res) {
             toggle_loader();
             if (res && res.Status) {
                 alertify.notify(res.Message, 'success', 5);
@@ -138,7 +142,7 @@ function delete_item(id, name, isFolder) {
     // make a request to create new folder
     toggle_loader();
     $.post(serverPath + 'Delete/',
-        {Id: id, IsFolder: isFolder},
+        { Id: id, IsFolder: isFolder },
         function (res) {
             toggle_loader();
             if (res && res.Status) {
@@ -229,6 +233,13 @@ $('.go-back').click(function () {
     addressBar.val(currentAddress.join('/'));
     update();
 });
+$('.Select-Item').click(function () {
+    parent.img(SelectedItemPath);
+});
+function token(msg) {
+    alert(msg);
+    return SelectedItemPath;
+}
 updateBtn.click(function () {
     update();
 });
@@ -237,17 +248,72 @@ $('#new-uploader').click(function () {
 });
 bdy.on('dblclick', '.item.file', function (e) {
     var item = $(this);
+    SelectedItemPath = item.attr('data-path').replace('ROOT', '/File-Repository');
+    SelectedItemId = item.attr('data-uid');
     if (item.attr('data-mime-type').includes('image')) {
         window.open(item.attr('data-path').replace('ROOT', '/File-Repository'), '_blank');
     } else {
         window.open(serverPath + 'Edit/' + item.attr('data-uid'), '_blank');
     }
+    document.getElementById("SelectedItemPath").value = SelectedItemId + ' - ' + SelectedItemPath;
 });
+var x = 0;
 bdy.on('click', '.item.file .custom-checkbox', function (e) {
     e.stopPropagation();
+    console.log('1-start');
+    //disable select 
+    if ($('.Select-Item').length) {
+        if (x === 0) {
+            if ($(this).children(".custom-control-input").is(":checked")) {//true
+                $(".Select-Item").css("display", "none"); //alert('true');
+                console.log('2-checkbox is checked');
+
+            } else {//false 
+                console.log('3-checkbox unchecked');
+
+                var item = $(this).children(".custom-control-input");
+                console.log(item);
+                var Checkboxid = $("#ch-" + $(this).parent().attr('data-uid') + "").attr('id');
+                var itemfileid = $(this).parent();
+                var type = $(this).parent().hasClass('folder') ? 'Folder' : 'File';
+                console.log(type);
+                console.log(Checkboxid);
+                console.log($('#' + Checkboxid + '').is(':checked'));
+                console.log($('#' + Checkboxid + ''));
+                console.log(itemfileid.attr('data-path'));
+                $(".custom-control-input").prop("checked", false);
+                $("#" + Checkboxid).attr('checked', 'checked');
+                if (type === 'File') {
+                    $(".Select-Item").css("display", "block");
+                } else { $(".Select-Item").css("display", "none"); }
+
+                SelectedItemPath = $(this).parent().attr('data-path').replace('ROOT', '/File-Repository');
+                SelectedItemId = $(this).parent().attr('data-uid');
+                console.log(SelectedItemId + ' - ' + SelectedItemPath);
+
+            }
+            x = 1;
+        } else x = 0;
+    }
+
 });
+
+bdy.on('click', '.item.file', function (e) {
+    var item = $(this);
+    var type = item.hasClass('folder') ? 'Folder' : 'File';
+    $(".custom-control-input").prop("checked", false);
+    $("#ch-" + item.attr('data-uid') + "").prop("checked", true);
+    if ($('.Select-Item').length) {
+        if (type === 'File') {
+            $(".Select-Item").css("display", "block");
+        } else { $(".Select-Item").css("display", "none"); }
+    }
+    SelectedItemPath = item.attr('data-path').replace('ROOT', '/File-Repository');
+    SelectedItemId = item.attr('data-uid');
+});
+
 $('#upload-modal').on('show.bs.modal', function () {
-   uploaderWrapper.html(uploaderSample.clone());
+    uploaderWrapper.html(uploaderSample.clone());
 });
 bdy.on('change', '.uploader .custom-file > input[type="file"]', function (e) {
     var fileName = e.target.files[0].name;
@@ -292,7 +358,7 @@ bdy.on('click', 'a.info', function (e) {
     e.preventDefault();
     var item = $(this).parents('.item');
     var type = item.hasClass('folder') ? 'Folder' : 'File';
-    alertify.alert(type + ' Information',
+    alertify.alert('<a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download>' + item.attr('data-name') + '</a> ' + type + ' Information',
         '<dl class="dl-horizontal dt-30">' +
         '   <dt>Id</dt>' +
         '   <dd>' + item.attr('data-uid') + '</dd>' +
@@ -306,10 +372,51 @@ bdy.on('click', 'a.info', function (e) {
         '   <dd>' + item.attr('data-CDate') + '</dd>' +
         '   <dt>Modification Date</dt>' +
         '   <dd>' + item.attr('data-MDate') + '</dd>' +
+        '   <dt>Download</dt>' +
+        '   <dd> <a href = "' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class= "download" download > <i class="fal fa-download fa-fw"></i></a> </dd>' +
         '</dl>',
         function (evt, value) {
         }
     );
+});
+bdy.on('click', 'a.preview', function (e) {
+    e.preventDefault();
+    var item = $(this).parents('.item');
+    var type = item.hasClass('folder') ? 'Folder' : 'File';
+    var Filemime = item.attr('data-mime-type');
+    if (type === 'File') {
+        if (Filemime.includes('video')) {
+            alertify.alert('<a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download ><i class="fal fa-download fa-fw"></i>' + item.attr('data-name') + '</a> ' + type + ' preview',
+                '<video controls id="myVideo" width="100%" height="100%"><source src="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" type="video/mp4"></video>',
+                function (evt, value) {
+                }
+            );
+        }
+        else if (Filemime.includes('image')) {
+            alertify.alert('<a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download >' + item.attr('data-name') + '</a> ' + type + ' preview',
+                '<div><img class="img-thumbnail" ' +
+                'src = "' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" ></div>',
+                function (evt, value) {
+                }
+            );
+
+        }
+        else if (Filemime.includes('txt')) {
+            alertify.alert('<a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download >' + item.attr('data-name') + '</a> ' + type + ' preview',
+                '<div><iframe src="/filemanager/main/_Edit/' + item.attr('data-uid') + '" frameborder="0" style="overflow:hidden;min-height:600px; height:100%;width:100%"></iframe> </div> ',
+                function (evt, value) {
+                }
+            );
+        }
+        else {
+            alertify.alert('<a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download >' + item.attr('data-name') + '</a> ' + type + ' preview',
+                '<div><a href="' + item.attr('data-path').replace('ROOT', '/File-Repository') + '" class="download" download><i class="fal fa-download fa-fw"></i>Not Suported! click to download</a></div> ',
+                function (evt, value) {
+                }
+            );
+        }
+    }
+
 });
 $(document).ready(function () {
     update();
