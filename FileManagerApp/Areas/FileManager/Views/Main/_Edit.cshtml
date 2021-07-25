@@ -1,0 +1,71 @@
+﻿
+@model FileManagerApp.Areas.FileManager.Models.EditFileItemModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<!-- Core -->
+<script src="~/Areas/FileManager/Assets/js/code-mirror/codemirror.js"></script>
+<link href="~/Areas/FileManager/Assets/js/code-mirror/codemirror.css" rel="stylesheet" />
+<!-- Theme -->
+<link href="~/Areas/FileManager/Assets/js/code-mirror/theme/material.css" rel="stylesheet" />
+<!-- Hints -->
+<script src="~/Areas/FileManager/Assets/js/code-mirror/hint/show-hint.js"></script>
+<link href="~/Areas/FileManager/Assets/js/code-mirror/hint/show-hint.css" rel="stylesheet" />
+<script src="~/Areas/FileManager/Assets/js/code-mirror/mode/javascript/javascript.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/hint/javascript-hint.js"></script>
+<!--  -->
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/closebrackets.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/closetag.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/continuelist.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/matchbrackets.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/matchtags.js"></script>
+<script src="~/Areas/FileManager/Assets/js/code-mirror/edit/trailingspace.js"></script>
+
+
+<div class="container">
+    <div class="card my-3">
+        <div class="card-header p-0">
+            <div class="d-inline-block p-2">
+                Youre editing <a href="@Request.Path"><code class="text-primary">@Model.Path/@Model.Name</code></a>
+            </div>
+            <div class="close p-3">
+                <button type="button" class="btn btn-outline-primary">
+                    <i class="fal fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0" id="content"></div>
+    </div>
+    <div class="text-right">
+    </div>
+</div>
+
+<script>
+    var myCodeMirror = CodeMirror(document.getElementById('content'), {
+        value: `@Html.Raw(Server.HtmlDecode(Model.Content))`,
+        mode: 'javascript',
+        lineNumbers: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        autoCloseTags: true,
+        autoCloseBrackets: true,
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+        theme: 'material'
+    });
+
+    CodeMirror.commands.autocomplete = function (cm) {
+        var doc = cm.getDoc();
+        var POS = doc.getCursor();
+        var mode = CodeMirror.innerMode(cm.getMode(), cm.getTokenAt(POS).state).mode.name;
+
+        if (mode === 'xml') { // html depends on xml
+            CodeMirror.showHint(cm, CodeMirror.hint.html);
+        } else if (mode === 'javascript') {
+            CodeMirror.showHint(cm, CodeMirror.hint.javascript);
+        } else if (mode === 'css') {
+            CodeMirror.showHint(cm, CodeMirror.hint.css);
+        }
+    };
+</script>
